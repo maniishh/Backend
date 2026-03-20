@@ -23,3 +23,5 @@ class ApiResponse {
         // (Because 4xx and 5xx are error codes in HTTP)
     }
 }
+
+export { ApiResponse };
