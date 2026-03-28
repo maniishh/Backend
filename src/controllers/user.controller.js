@@ -3,6 +3,7 @@ import {ApiError} from "../utils/ApiError.js";
 import {User}  from "../models/user.model.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt from "jsonwebtoken";
 
 const generateAcessTokenAndRefreshToken=async(userId)=>{
     try{
@@ -152,6 +153,23 @@ return res.status(200)
 .json(new ApiResponse(200,{},"User logged out successfully")) 
      })
 
+const refreshAccessToken=asyncHandler(async(req,res)=>{  
+   //get refresh token from cookies
+   const incomingRefreshToken=req.cookies.refreshToken || req.body.refreshToken
+   if(!incomingRefreshToken){
+    throw new ApiError(401,"Refresh token is missing")
+   }
+    //verify refresh token
+   const decodedToken=jwt.verify(incomingRefreshToken,
+        process.env.REFRESH_TOKEN_SECRET
+    )
+   const user= await User.findById(decodedToken?._id)
+   if(!user){
+    throw new ApiError(401,"Invalid refresh token")
+   }
+
+
+})
 export {registerUser,
     loginUser,
     logOutUser
