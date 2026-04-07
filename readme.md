@@ -1,102 +1,100 @@
-# 🚀 Backend Learning Project
+# 🎥 StreamHive (Backend)
 
-A structured **Node.js + Express backend project** where I am learning and implementing backend concepts step by step.
-
-This repository will gradually include many backend concepts such as **authentication, database design, middleware, APIs, and system architecture**.
-
-Think of it as my **backend engineering playground** ⚡
+A scalable backend system for a modern video streaming platform. It provides APIs for user management, video handling, engagement features, and content discovery — designed with production-style architecture and best practices.
 
 ---
 
-# 📂 Project Structure
+## 🚀 Core Features
+
+* 🔐 **Authentication & Authorization** (JWT-based)
+* 👤 **User & Channel Management**
+* 📤 **Video Upload & Processing** (Cloud storage integration)
+* ▶️ **Video Streaming Support (URL-based delivery)**
+* 👍 **Like / 👎 Dislike System**
+* 💬 **Comments & Threading**
+* 📊 **View Count Tracking & Metrics**
+* 🔍 **Search & Filtering APIs**
+* 🧩 **Modular MVC Architecture**
+
+---
+
+## 🧱 Architecture Overview
+
+* **Layered Design**: Routes → Controllers → Services → Models
+* **RESTful APIs** with clear resource naming
+* **Stateless Auth** using JWT
+* **Scalable Storage** using cloud media service
+* **Error Handling Middleware** for consistent responses
+
+---
+
+## 🛠️ Tech Stack
+
+**Backend:**
+
+* Node.js
+* Express.js
+
+**Database:**
+
+* MongoDB (Mongoose ODM)
+
+**Auth & Security:**
+
+* JSON Web Tokens (JWT)
+* Bcrypt (password hashing)
+
+**Media Storage:**
+
+* Cloudinary (or similar)
+
+---
+
+## 📂 Project Structure
 
 ```
-backend/
-│
-├── src/
-│   ├── db/            # Database connection and configuration
-│   ├── middlewares/   # Custom Express middlewares
-│   ├── models/        # Mongoose models / schemas
-│   ├── utils/         # Utility functions and helpers
-│   │
-│   ├── app.js         # Express app configuration
-│   ├── constants.js   # Global constants used across project
-│   └── index.js       # Entry point of the application
-│
-├── .env               # Environment variables (not pushed to Git)
-├── .env.sample        # Example environment variables
-├── .gitignore         # Git ignored files
-├── .prettierignore    # Prettier ignore rules
-├── .prettierrc        # Prettier configuration
-│
-├── package.json       # Project dependencies
-└── README.md          # Project documentation
+streamhive/
+│── src/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── middlewares/
+│   ├── utils/
+│   └── config/
+│── .env
+│── package.json
 ```
 
 ---
 
-# ⚙️ Tech Stack
+## ⚙️ Setup & Installation
 
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- Dotenv
-- Prettier
-
-More technologies will be added as the project grows.
-
----
-
-# 🧠 Concepts I'm Learning
-
-This repository will cover:
-
-- REST API Design
-- Express Middleware
-- MVC Architecture
-- MongoDB + Mongoose
-- Environment Variables
-- Error Handling
-- Authentication (JWT)
-- File Uploads
-- Pagination
-- Aggregation Pipelines
-- Backend Best Practices
-- Scalable Project Structure
-- System Design Basics
-
-More advanced backend topics will be added soon.
-
----
-
-# 🛠 Installation
-
-Clone the repository
+### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/backend-project.git
+git clone https://github.com/maniishh/streamhive.git
+cd streamhive
 ```
 
-Go into the project folder
-
-```bash
-cd backend-project
-```
-
-Install dependencies
+### 2️⃣ Install dependencies
 
 ```bash
 npm install
 ```
 
-Create environment variables
+### 3️⃣ Environment variables
+
+Create a `.env` file:
 
 ```
-cp .env.sample .env
+PORT=5000
+MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_secret_key
+CLOUDINARY_URL=your_cloudinary_config
 ```
 
-Run the server
+### 4️⃣ Run the server
 
 ```bash
 npm run dev
@@ -104,36 +102,104 @@ npm run dev
 
 ---
 
-# 🌱 Future Plans
+## 📡 API Highlights
 
-Planned features to implement:
+* `POST /api/auth/register` – Register user
+* `POST /api/auth/login` – Login user
+* `POST /api/videos` – Upload video
+* `GET /api/videos/:id` – Fetch video
+* `POST /api/videos/:id/like` – Like video
+* `POST /api/comments` – Add comment
 
-- User Authentication
-- Refresh Token System
-- Role Based Access Control
-- File Upload with Cloudinary
-- Logging System
-- Rate Limiting
-- Caching (Redis)
-- Unit Testing
-- API Documentation
-- Docker Setup
+### 📥 Sample Requests & Responses
+
+#### Register User
+
+```json
+POST /api/auth/register
+{
+  "username": "manish",
+  "email": "manish@email.com",
+  "password": "123456"
+}
+```
+
+```json
+Response:
+{
+  "success": true,
+  "token": "jwt_token_here"
+}
+```
+
+#### Upload Video
+
+```json
+POST /api/videos
+Headers: Authorization: Bearer <token>
+Body: multipart/form-data
+```
+
+```json
+Response:
+{
+  "success": true,
+  "videoId": "abc123"
+}
+```
 
 ---
 
-# 📌 Purpose of This Repository
+## 🧠 System Design (High-Level)
 
-This project is mainly for:
+```
+Client → API Gateway → Express Server
+                ↓
+        Controllers Layer
+                ↓
+        Services Layer
+                ↓
+        Database (MongoDB)
+                ↓
+        Cloud Storage (Videos)
+```
 
-- Practicing backend development
-- Understanding scalable backend architecture
-- Preparing for SDE backend roles
-- Building a strong backend foundation
+* Client interacts via REST APIs
+* Backend handles auth, logic, and data flow
+* Media stored externally for scalability
 
 ---
 
-# 👨‍💻 Author
+---
+
+## 📌 Design Decisions
+
+* Used **JWT** for stateless scalability
+* Followed **MVC pattern** for maintainability
+* Separated **business logic (services)** from controllers
+* Integrated **cloud storage** to avoid local file bottlenecks
+
+---
+
+## 🔮 Future Improvements
+
+* 🔴 Real-time notifications (WebSockets)
+* 🤖 Recommendation system
+* 📈 Analytics dashboard
+* 🧪 Unit & integration testing
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome. Fork the repo and create a PR.
+
+---
+
+## 👨‍💻 Author
 
 **Manish**
 
-Backend Developer in Progress 🚀
+---
+
+⭐ If you find this useful, consider starring the repo!
