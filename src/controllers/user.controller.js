@@ -203,7 +203,7 @@ const refreshAccessToken=asyncHandler(async(req,res)=>{
 //if valid,update with new password
 //send response
 const {oldPassword,newPassword}=req.body;
-const user =await User.findOne(req.user?.id)
+const user =await User.findOne(req.user?._id)
 const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
 if(!isPasswordCorrect){
     throw new ApiError(401,"old password is incorrect")
@@ -218,10 +218,36 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
     status(200).
     json(new ApiResponse(200,req.user,"Current user fetched successfully"))
 })
+const updateAccountDetails=asyncHandler(async(req,res)=>{
+    //get user id from req.user
+    //get updated details from req.body and files from req.files
+    //find user in db and update details
+    //send response
+    const {fullName,email}=req.body;
+
+    if([fullName,email].some((field)=>field?.trim()==="")){
+        throw new ApiError(400,"Full name and email cannot be empty")
+    }
+
+    const user=await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set:{
+                fullName,
+                email:email
+            }
+        },
+        {new:true}
+    ).select("-password");
+
+    return res.status(200).json(new ApiResponse(200,updatedUser,"Account details updated successfully"))
+
+})
 export {registerUser,
     loginUser,
     logOutUser,
     refreshAccessToken,
     changeCurrentUserPassword,
-    getCurrentUser
+    getCurrentUser,
+    updateAccountDetails
 }
