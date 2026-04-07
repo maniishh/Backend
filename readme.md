@@ -180,6 +180,12 @@ Client → API Gateway → Express Server
 * Integrated **cloud storage** to avoid local file bottlenecks
 
 ---
+## 🧪 Testing (Planned)
+
+- Unit testing using Jest
+- API testing with Postman
+
+---
 
 ## 🔮 Future Improvements
 
