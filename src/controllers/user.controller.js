@@ -243,11 +243,69 @@ const updateAccountDetails=asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,updatedUser,"Account details updated successfully"))
 
 })
-export {registerUser,
+ 
+const updateUserAvatar=asyncHandler(async(req,res)=>{
+     //get user id from req.user
+     //get avatar from req.files
+     //upload avatar to cloudinary
+    const avatarLocalPath=req.file?.path
+    if(!avatarLocalPath){
+        throw new ApiError(400,"Avatar image is required")
+    }
+    const avatar=await uploadOnCloudinary(avatarLocalPath,"avatars")
+    if(!avatar.url){
+        throw new ApiError(500,"Error uploading avatar")
+    }
+    const user=await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set:{
+                avatar:avatar.url
+            }
+        },
+        {new:true}
+    ).select("-password");
+
+    return res.status(200).json(new ApiResponse(200,user,"Avatar updated successfully"))
+
+})
+
+const updateCoverImage=asyncHandler(async(req,res)=>{
+     //get user id from req.user
+     //get cover image from req.files
+     //upload cover image to cloudinary
+    const coverImageLocalPath=req.file?.path
+    if(!coverImageLocalPath){
+        throw new ApiError(400,"Cover image is required")
+    }
+    const coverImage=await uploadOnCloudinary(coverImageLocalPath)
+    if(!coverImage.url){
+        throw new ApiError(500,"Error uploading cover image")
+    }
+    const user=await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set:{
+                cover:coverImage.url
+            }
+        },
+        {new:true}
+    ).select("-password");
+
+    return res.
+    status(200).
+    json(new ApiResponse(200,user,"Cover image updated successfully"))
+
+})
+
+export {
+    registerUser,
     loginUser,
     logOutUser,
     refreshAccessToken,
     changeCurrentUserPassword,
     getCurrentUser,
-    updateAccountDetails
+    updateAccountDetails,
+    updateUserAvatar,
+    updateCoverImage
 }
