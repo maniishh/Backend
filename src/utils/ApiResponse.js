@@ -15,7 +15,7 @@ class ApiResponse {
 
         this.message = message; 
         // Store a readable message for frontend display
-
+f
         this.success = statusCode < 400; 
         // Automatically determine success:
         // If statusCode is less than 400 → success = true
